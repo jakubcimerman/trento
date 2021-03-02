@@ -101,6 +101,8 @@ int main(int argc, char* argv[]) {
      "HDF5 file or directory for text files")
     ("no-header", po::bool_switch(),
      "do not write headers to text files")
+    ("no-grid-header", po::bool_switch(),
+     "do not write grid parameters into header")
     ("ncoll", po::bool_switch(),
      "calculate binary collisions");
 
