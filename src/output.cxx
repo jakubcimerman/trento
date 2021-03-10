@@ -48,7 +48,7 @@ void write_stream(std::ostream& os, int width, int num, double impact_param,
 }
 
 void write_text_file(const fs::path& output_dir, int width, int num,
-    double impact_param, int ncoll, const Event& event, bool header) {
+    double impact_param, int ncoll, const Event& event, bool header, bool grid_header) {
   // Open a numbered file in the output directory.
   // Pad the filename with zeros.
   std::ostringstream padded_fname{};
@@ -69,6 +69,12 @@ void write_text_file(const fs::path& output_dir, int width, int num,
 
     for (const auto& ecc : event.eccentricity())
       ofs << "# e" << ecc.first << "    = " << ecc.second << '\n';
+  }
+
+  if (grid_header) {
+    ofs << "# grid-step = " << event.dxy() << '\n'
+        << "# grid-nsteps = " << event.nsteps() << '\n'
+        << "# grid-max = " << event.xymax() << '\n';
   }
 
   // Write IC profile as a block grid.  Use C++ default float format (not
@@ -205,11 +211,12 @@ Output::Output(const VarMap& var_map) {
         fs::create_directories(output_path);
       }
       auto header = !var_map["no-header"].as<bool>();
+      auto grid_header = !var_map["no-grid-header"].as<bool>();
       writers_.emplace_back(
-        [output_path, width, header](int num, double impact_param,
+        [output_path, width, header, grid_header](int num, double impact_param,
           int ncoll, const Event& event) {
           write_text_file(output_path, width, num,
-              impact_param, ncoll, event, header);
+              impact_param, ncoll, event, header, grid_header);
         }
       );
     }

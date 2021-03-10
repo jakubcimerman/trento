@@ -60,6 +60,16 @@ class Event {
   const int& npart() const
   { return npart_; }
 
+  /// Grid params.
+  const double& dxy() const
+  { return dxy_; }
+
+  const int& nsteps() const
+  { return nsteps_; }
+
+  const double& xymax() const
+  { return xymax_; }
+
   /// \rst
   /// Multiplicity---or more specifically, total integrated reduced thickness.  May be interpreted
   /// as `dS/d\eta` or `dE/d\eta` at midrapidity.
